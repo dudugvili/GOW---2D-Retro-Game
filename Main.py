@@ -8,7 +8,7 @@ from src.data.Color import Color
 def set_game():    #saved file
     curr_dir = os.path.dirname(__file__)
     full_path = os.path.join(curr_dir, "src\\data\\save_file.txt")
-    if os.path.getsize(full_path):
+    if False: #Need to add a saved game optionwyt
         print("Welcome back, here are your stats - ")
     else:
         new_game_text()
