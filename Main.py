@@ -3,6 +3,7 @@ import os
 import time
 from src.Kratos import Kratos, full_attack_moves, full_item_list
 from src.Mob import Mob, mob_warning_text, mob_fight_text, mob_dead_text
+from src.Map import Map
 from src.data.Color import Color
 
 def set_game():    #saved file
@@ -108,12 +109,46 @@ def print_health(player, enemy):
     else:
         print("    |" + Color.RED + bar_blocks + Color.END + blank_blocks + "|")
     
+def move(map):
+    move_dict = {'W':-1 , 'A':-1, 'S':1, 'D':1, 'w':-1, 'a':-1, 's':1, 'd':1}
+    move = input("Choose movement (WASD) - ")
+    full_map = map.full_map
+    x_cord = map.kratos_cord['X']
+    y_cord = map.kratos_cord['Y']
+    while move not in move_dict.keys():
+        move = input("Choose a valid movement please (WASD) - ")
+    moving = move_dict[move]
+    if move in ['W', 'w', 'S', 's']:
+        if (y_cord) not in range (2, map.max_y + 1):
+            print(Color.RED + Color.BOLD + "Invaild movement, outside map boreders." + Color.END)
+            return -1
+        else:
+            if any(ch in "-|" for ch in full_map[y_cord + moving: y_cord + 2 + moving][x_cord - 1: x_cord + 1]): 
+                map.kratos_cord["Y"] += moving
+                return lottery_win(20)
+            else:
+                return False
+    elif move in ['A', 'a', 'D', 'd']:
+        if (x_cord + moving) not in range (1, map.max_x):
+            print(Color.RED + Color.BOLD + "Invaild movement, outside map boreders." + Color.END)
+            return -1
+        else:
+            if any(ch in "-|" for ch in full_map[y_cord : y_cord + 2][x_cord - 1 + moving: x_cord + 1 + moving]): 
+                map.kratos_cord["X"] += move_dict[move]
+                return lottery_win(20)
+            else:
+                return False
+
 
 
 
 player = set_game()
+map = Map(70, 70, 35,70)
 while player.hp:
-    move = input("Choose movement (WASD) - ")
+    map.print_map()
+    encounter = -1
+    while encounter == -1:
+        encounter = move(map)
     print("\n")
     #move by map
     if True:        #if encountered a monster
