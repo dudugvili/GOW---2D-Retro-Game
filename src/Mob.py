@@ -1,5 +1,5 @@
 import secrets
-
+from src.data.Color import Color
 
 mob_names = ["Troll", "Dragon", "Fierce Ogre", "Cyclop", "Scylla", "Hydra", "Hei-Walker", "Draugr"]
 class Mob:
