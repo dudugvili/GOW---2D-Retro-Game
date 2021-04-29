@@ -68,7 +68,11 @@ class Map:
     def print_map(self):
         y_axis = self.kratos_cord['Y']
         x_axis = self.kratos_cord['X']
-        for line_ctr in range(y_axis - 15, y_axis + 1):
+        if(y_axis - 15 < 0):
+            map_print_range = (0, 15)
+        else:
+            map_print_range = range(y_axis - 15, y_axis + 1)
+        for line_ctr in map_print_range:
             for row_ctr in range(0,71):
                 if line_ctr in range (y_axis - 2, y_axis + 1) and row_ctr in range(x_axis - 1, x_axis + 2):
                     if line_ctr == (y_axis - 2):

@@ -119,13 +119,15 @@ def move(map):
         move = input("Choose a valid movement please (WASD) - ")
     moving = move_dict[move]
     if move in ['W', 'w', 'S', 's']:
-        if (y_cord) not in range (2, map.max_y + 1):
+        print(y_cord, " ", map.max_y)
+        if (y_cord + moving) not in range (2, map.max_y + 1):
             print(Color.RED + Color.BOLD + "Invaild movement, outside map boreders." + Color.END)
             return -1
         else:
-            if any(ch in "-|" for ch in full_map[y_cord + moving: y_cord + 2 + moving][x_cord - 1: x_cord + 1]): 
-                map.kratos_cord["Y"] += moving
-                return lottery_win(20)
+            map.kratos_cord["Y"] += moving
+            for i in range(0,3):
+                if any(ch in "-|" for ch in (full_map[y_cord -2 + moving: y_cord + 1 + moving][i])[x_cord - 1: x_cord + 2]): 
+                    return lottery_win(0)
             else:
                 return False
     elif move in ['A', 'a', 'D', 'd']:
@@ -133,9 +135,10 @@ def move(map):
             print(Color.RED + Color.BOLD + "Invaild movement, outside map boreders." + Color.END)
             return -1
         else:
-            if any(ch in "-|" for ch in full_map[y_cord : y_cord + 2][x_cord - 1 + moving: x_cord + 1 + moving]): 
-                map.kratos_cord["X"] += move_dict[move]
-                return lottery_win(20)
+            map.kratos_cord["X"] += moving
+            for i in range(0,3):
+                if any(ch in "-|" for ch in (full_map[y_cord -2: y_cord + 1][i])[x_cord - 1 + moving: x_cord + 2 + moving]): 
+                    return lottery_win(0)
             else:
                 return False
 
@@ -151,7 +154,7 @@ while player.hp:
         encounter = move(map)
     print("\n")
     #move by map
-    if True:        #if encountered a monster
+    if encounter:        #if encountered a monster
         rand_mob_atk = int(float(player.atk) * (secrets.choice(range(70,130))/100))     #random mob dmg from (-30%) to (+30%) by player's atk
         rand_mob_hp = int(float(player.hp) * (secrets.choice(range(70,130))/100))     #random mob HP from (-30%) to (+30%) by player's HP
         rand_mob_def = int(float(player.defense) * (secrets.choice(range(70,130))/100))     #random mob defense from (-30%) to (+30%) by player's defense
