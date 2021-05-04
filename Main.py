@@ -24,6 +24,8 @@ def new_game_text():
     print(Color.UNDERLINE + Color.BOLD +"Welcome, this is your player -" + Color.END + "    " + Color.CYAN + Color.BOLD + "/|\\" + Color.END)
     print("                                  "+ Color.CYAN + Color.BOLD + "/ \\" + Color.END)
     print(Color.BOLD + "To move use the 'WASD' keys")
+    print(Color.BOLD + "You can move freely on grass without encountering monsters, the grass looks like this - " + Color.GREEN + "/\\/\\" + Color.END)
+    print(Color.BOLD + "When moving through shrubs you have a chance of getting into a fight, the shrubs looks like this - " + Color.DARK_GRAY + "|-|" + Color.END)
     print("To choose an action type in the chosen number\n" + Color.END)
     print(Color.UNDERLINE + Color.BOLD +"When encountering an enemy you will act in turns, in your turn you can choose to:"+ Color.END)
     print("1: " + Color.RED + "Attack" + Color.END + " the enemy - throughout the game you will achieve new attack moves.")
@@ -160,9 +162,9 @@ while player.hp:
     print("\n")
     #move by map
     if encounter:        #if encountered a monster
-        rand_mob_atk = int(float(player.atk) * (secrets.choice(range(70,130))/100))     #random mob dmg from (-30%) to (+30%) by player's atk
-        rand_mob_hp = int(float(player.hp) * (secrets.choice(range(70,130))/100))     #random mob HP from (-30%) to (+30%) by player's HP
-        rand_mob_def = int(float(player.defense) * (secrets.choice(range(70,130))/100))     #random mob defense from (-30%) to (+30%) by player's defense
+        rand_mob_atk = int(float(player.atk) * (secrets.choice(range(70,115))/100))     #random mob dmg from (-30%) to (+15%) by player's atk
+        rand_mob_hp = int(float(player.hp) * (secrets.choice(range(70,115))/100))     #random mob HP from (-30%) to (+15%) by player's HP
+        rand_mob_def = int(float(player.defense) * (secrets.choice(range(70,115))/100))     #random mob defense from (-15%) to (+30%) by player's defense
         enemy = Mob(100, rand_mob_atk, rand_mob_def)
         print(Color.GREEN + secrets.choice(mob_warning_text) + Color.END + "It's a " + Color.BOLD + Color.RED + enemy.name + Color.END + secrets.choice(mob_fight_text) + "\n")
         turn_ctr = 0        #switching turns
