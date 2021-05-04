@@ -1,7 +1,36 @@
 import secrets
 import time
-from src.data.Color import Color
+import msvcrt
+#from src.data.Color import Color
 from colorama import Fore, Back, Style
+class Color:
+    HEADER = '\033[95m'
+    GREEN = '\033[92m'
+    BROWN = "\033[0;33m"
+    DARK_GRAY = "\033[1;30m"
+    LIGHT_RED = "\033[1;31m"
+    LIGHT_GREEN = "\033[1;32m"
+    BLUE = '\033[94m'
+    RED = '\033[91m'
+    BOLD = '\033[1m'
+    PURPLE = '\033[95m'
+    YELLOW = '\033[93m'
+    CYAN = '\033[96m'
+    DARKCYAN = '\033[36m'
+    FAINT = "\033[2m"
+    ITALIC = "\033[3m"
+    CROSSED = "\033[9m"
+    UNDERLINE = '\033[4m'
+    END = '\033[0m'
+
+ 
+    def disable(self):
+        self.HEADER = ''
+        self.OKBLUE = ''
+        self.OKGREEN = ''
+        self.WARNING = ''
+        self.FAIL = ''
+        self.ENDC = ''
 
 full_attack_moves = [{"name": "Njord's Tempest", "dmg_prcnt": 60, "accur": 80, "stamina": 15}, {"name": "Tyr's Revenge", "dmg_prcnt": 80, "accur": 90, "stamina": 40},
                      {"name": "Breath Of Thamur", "dmg_prcnt": 100, "accur": 70,  "stamina": 35} , {"name": "Hel's Touch", "dmg_prcnt": 60, "accur": 70, "stamina": 20}, 
@@ -30,7 +59,7 @@ class Kratos:
     
     def gen_dmg(self, attack_prcnt):
         gen_dmg = secrets.choice(range(self.atkl, self.atkh))     #generating random dmg value between high and low
-        gendmg = int(float(attack_prcnt/100) * float(gen_dmg))      #determing dmg by attack type
+        gen_dmg = int(float(attack_prcnt/100) * float(gen_dmg))      #determing dmg by attack type
         return gen_dmg
 
     def take_dmg(self, attacker):
@@ -84,9 +113,11 @@ class Kratos:
         for action in self.actions:
             i += 1
             print(str(i) + ": " + action)
-        action_input = int(input("Choose action number: "))
+        print("Choose action:")
+        action_input = int(chr(msvcrt.getch()[0]))
         while action_input > i or action_input < 1:        #overflow check
-            action_input = int(input(Color.RED + Color.UNDERLINE + "Please choose a valid number from the list above.\n" + Color.END))
+            print(Color.RED + Color.UNDERLINE + "Please choose a valid number from the list above.\n" + Color.END)
+            action_input = int(chr(msvcrt.getch()[0]))
         return self.actions[action_input - 1]    #returning name of the action
     
     def choose_attack(self):
@@ -100,9 +131,11 @@ class Kratos:
             print(str(i) + ": " + Color.BLUE + attack.get("name")+ Color.END + " | Damage Power: " + Color.RED +
                 str(attack.get("dmg_prcnt")) + "%" + Color.END + " | Stamina Cost: " + Color.GREEN + str(attack.get("stamina")) +
                     Color.END + " | Chances to miss: " + Color.YELLOW + str(100 - attack.get("accur")) + "%\n" + Color.END)
-        attack_input =  int(input("Choose attack number: "))
+        print("Choose attack: ")
+        attack_input = int(chr(msvcrt.getch()[0]))
         while (attack_input > i or attack_input < 1) or (self.attacks[attack_input - 1].get("stamina") > self.stamina):          #overflow and stamina check
-            attack_input = int(input(Color.RED + Color.UNDERLINE + "Invaild number entered or not enough Stamina available, please choose a different attack move.\n" + Color.END))
+            print(Color.RED + Color.UNDERLINE + "Invaild number entered or not enough Stamina available, please choose a different attack move.\n" + Color.END)
+            attack_input = int(chr(msvcrt.getch()[0]))
         attack_move = self.attacks[attack_input -1]        #get dict element of attack
         return attack_move
         
@@ -112,10 +145,12 @@ class Kratos:
         if self.items:
             for item in self.items:
                 i += 1
-                print(str(i) + ":("+ str(item.get("qty")) + ") " +Color.BLUE + item.get("name") + Color.END + " - restore " + Color.BLUE +str(item.get("amount")) + Color.END + " " + str(item.get("heal")))
-            item_input = int(input("Choose item number: "))
+                print(str(i) + ":" +Color.BLUE + item.get("name") + Color.END + " - restore " + Color.BLUE +str(item.get("amount")) + Color.END + " " + str(item.get("heal")) + "(" +str(item.get("qty")) + " left) ")
+            print("Choose item: ")
+            item_input = int(chr(msvcrt.getch()[0]))
             while item_input > i or item_input < 1:
-                item_input = int(input(Color.RED + Color.UNDERLINE + "Please choose a valid number from the list above.\n" + Color.END))
+                print(Color.RED + Color.UNDERLINE + "Please choose a valid number from the list above.\n" + Color.END)
+                item_input = int(chr(msvcrt.getch()[0]))
             return item_input - 1
         else:
             print("You don't have any items to use yet, try to attack instead.\n")

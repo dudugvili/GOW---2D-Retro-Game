@@ -1,5 +1,13 @@
 import secrets
-import src.data.Color
+from src.data.Color import Color
+ 
+    def disable(self):
+        self.HEADER = ''
+        self.OKBLUE = ''
+        self.OKGREEN = ''
+        self.WARNING = ''
+        self.FAIL = ''
+        self.ENDC = ''
 
 class Map:
     def __init__(self, max_x, max_y, kratos_x, kratos_y):
@@ -34,13 +42,13 @@ class Map:
             print(Color.DARK_GRAY , end = '')
         elif any(ch in "/\\" for ch in cell_print):
             print(Color.GREEN, end = '')
-        print(self.full_map[line_ctr][row_ctr] , end = '')
+        print(self.full_map[line_ctr][row_ctr] + Color.END , end = '')
 
     def print_map(self):
         y_axis = self.kratos_cord['Y']
         x_axis = self.kratos_cord['X']
         if(y_axis - 15 < 0):
-            map_print_range = (0, 15)
+            map_print_range = range(0,15)
         else:
             map_print_range = range(y_axis - 15, y_axis + 1)
         for line_ctr in map_print_range:

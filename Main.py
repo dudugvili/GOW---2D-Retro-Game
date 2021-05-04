@@ -1,6 +1,8 @@
 import secrets
 import os
 import time
+import subprocess
+import msvcrt
 from src.Kratos import Kratos, full_attack_moves, full_item_list
 from src.Mob import Mob, mob_warning_text, mob_fight_text, mob_dead_text
 from src.Map import Map
@@ -9,11 +11,11 @@ from src.data.Color import Color
 def set_game():    #saved file
     curr_dir = os.path.dirname(__file__)
     full_path = os.path.join(curr_dir, "src\\data\\save_file.txt")
-    if False: #Need to add a saved game optionwyt
+    if False: #Need to add a saved game option
         print("Welcome back, here are your stats - ")
     else:
         new_game_text()
-        return Kratos(100, 35, 35, 15, 0, [full_item_list[0], full_item_list[1]])
+        return Kratos(100, 35, 50, 15, 0, [full_item_list[0], full_item_list[1]])
         
 
 def new_game_text():
@@ -28,11 +30,13 @@ def new_game_text():
     print("2: " + Color.GREEN + "Use" + Color.END + " a potion to restore HP or Stamina - you can get Potions from killing enemies or finding them around the map.")
     print("3: " + Color.CYAN + "Rest" + Color.END + ", use this to restore 15 Stamina without potions - after each fight Stamina is fully restored.")
     print(Color.BOLD + "\n===============================================\n" + Color.END)
-    ready = input(Color.UNDERLINE + Color.BOLD +"Ready to begin? (Y/N) -" + Color.END)
+    print(Color.UNDERLINE + Color.BOLD +"Ready to begin? (Y/N) -" + Color.END)
+    ready = chr(msvcrt.getch()[0])
     if ready == 'Y' or ready == 'y':
         print("Good luck. (you will need it)\n")
     else:
         print("Too late, good luck !\n")
+    time.sleep(1.5)
 
 def lottery_win(chance):        #function to randomly win attack moves and items
     rand_num = secrets.randbelow(101)
@@ -111,23 +115,23 @@ def print_health(player, enemy):
     
 def move(map):
     move_dict = {'W':-1 , 'A':-1, 'S':1, 'D':1, 'w':-1, 'a':-1, 's':1, 'd':1}
-    move = input("Choose movement (WASD) - ")
+    move = chr(msvcrt.getch()[0])
     full_map = map.full_map
     x_cord = map.kratos_cord['X']
     y_cord = map.kratos_cord['Y']
     while move not in move_dict.keys():
-        move = input("Choose a valid movement please (WASD) - ")
+        print(Color.RED + Color.BOLD + "Choose a valid movement please (WASD) - " + Color.END)
+        move = chr(msvcrt.getch()[0])
     moving = move_dict[move]
     if move in ['W', 'w', 'S', 's']:
-        print(y_cord, " ", map.max_y)
         if (y_cord + moving) not in range (2, map.max_y + 1):
             print(Color.RED + Color.BOLD + "Invaild movement, outside map boreders." + Color.END)
             return -1
         else:
-            map.kratos_cord["Y"] += moving
+            map.kratos_cord["Y"] += (moving*2)
             for i in range(0,3):
                 if any(ch in "-|" for ch in (full_map[y_cord -2 + moving: y_cord + 1 + moving][i])[x_cord - 1: x_cord + 2]): 
-                    return lottery_win(0)
+                    return lottery_win(20)
             else:
                 return False
     elif move in ['A', 'a', 'D', 'd']:
@@ -135,19 +139,20 @@ def move(map):
             print(Color.RED + Color.BOLD + "Invaild movement, outside map boreders." + Color.END)
             return -1
         else:
-            map.kratos_cord["X"] += moving
+            map.kratos_cord["X"] += (moving*2)
             for i in range(0,3):
                 if any(ch in "-|" for ch in (full_map[y_cord -2: y_cord + 1][i])[x_cord - 1 + moving: x_cord + 2 + moving]): 
-                    return lottery_win(0)
+                    return lottery_win(20)
             else:
                 return False
 
 
 
-
+subprocess.call(['tput', 'reset'])
 player = set_game()
 map = Map(70, 70, 35,70)
 while player.hp:
+    subprocess.call(['tput', 'reset'])
     map.print_map()
     encounter = -1
     while encounter == -1:
@@ -161,12 +166,13 @@ while player.hp:
         enemy = Mob(100, rand_mob_atk, rand_mob_def)
         print(Color.GREEN + secrets.choice(mob_warning_text) + Color.END + "It's a " + Color.BOLD + Color.RED + enemy.name + Color.END + secrets.choice(mob_fight_text) + "\n")
         turn_ctr = 0        #switching turns
-        time.sleep(1.5)
+        time.sleep(2.5)
         while player.hp > 0 and enemy.hp > 0:
             if not turn_ctr%2:      #player's turn
+                subprocess.call(['tput', 'reset'])
                 print(Color.BOLD + "\n===============================================\n" + Color.END)
                 print_health(player, enemy)
-                time.sleep(2)
+                time.sleep(1.5)
                 print(Color.BLUE + Color.BOLD + "\n                 -YOUR TURN-                     " + Color.END)
                 player_action = player.choose_action()
                 #using potions
@@ -202,7 +208,7 @@ while player.hp:
                 print("            " + Color.RED + enemy.name + Color.END + " ATTACKS ! " + Color.RED + Color.BOLD + "-" + str(enemy_dmg) + " HP" + Color.END+ "\n")
 
             turn_ctr += 1
-            time.sleep(2)
+            time.sleep(1.5)
 
         if enemy.hp <= 0:
             print(Color.BLUE + Color.BOLD + Color.UNDERLINE + "You've defeated " + enemy.name + secrets.choice(mob_dead_text) + Color.END + "\n")
