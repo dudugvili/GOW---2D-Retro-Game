@@ -1,5 +1,5 @@
 import secrets
-import src.data.Color
+from src.data.Color import Color
 
 class Map:
     def __init__(self, max_x, max_y, kratos_x, kratos_y):
