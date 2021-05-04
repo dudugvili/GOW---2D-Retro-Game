@@ -3,7 +3,7 @@ from src.data.Color import Color
 
 mob_names = ["Troll", "Dragon", "Fierce Ogre", "Cyclop", "Scylla", "Hydra", "Hei-Walker", "Draugr"]
 class Mob:
-    def __init__(self, hp, atk, defense):
+    def __init__(self, hp, atk, defense): # Instantiates the Mob class
         self.name = secrets.choice(mob_names)
         self.max_hp = hp
         self.hp = hp
@@ -12,7 +12,7 @@ class Mob:
         self.atkh = atk + 10
         self.defense = defense
 
-    def take_dmg(self, attacker, atk_move):
+    def take_dmg(self, attacker, atk_move): # Function that damages Mob
         rand_num = secrets.randbelow(101)
         if rand_num in range(0, atk_move.get("accur") + 1):     #if random number generated is inside the accuracy range of the attack
             player_dmg = attacker.gen_dmg(atk_move.get("dmg_prcnt"))      #generate dmg by attack move damage percent and accuracy
@@ -21,9 +21,7 @@ class Mob:
         else:
             return -1
 
-
-
-    def gen_dmg(self):
+    def gen_dmg(self): # Function that generates the damage for the Mob
         rand_prcnt = secrets.randbelow(100)
         gen_dmg = int(float(rand_prcnt)/100 * (self.atkh - self.atkl))+(self.atkl)     #generating random dmg value between high and low
         return gen_dmg

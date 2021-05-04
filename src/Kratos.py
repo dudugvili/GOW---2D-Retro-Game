@@ -13,7 +13,7 @@ full_item_list = [{"name": "HP Potion", "heal":"HP", "amount": 35, "qty": 1}, {"
 
 class Kratos:
     
-    def __init__(self, hp, stamina, atk, defense, kills, items):
+    def __init__(self, hp, stamina, atk, defense, kills, items): #Initiates the Kratos class
         self.max_hp = hp
         self.hp = hp
         self.max_stamina = stamina
@@ -28,12 +28,12 @@ class Kratos:
         self.actions = ["Attack", "Use", "Rest"]
         self.attacks = [{"name": "Slash", "dmg_prcnt": 50, "accur": 100, "stamina": 10}]
     
-    def gen_dmg(self, attack_prcnt):
+    def gen_dmg(self, attack_prcnt): # Calculates the damage the player does
         gen_dmg = secrets.choice(range(self.atkl, self.atkh))     #generating random dmg value between high and low
         gendmg = int(float(attack_prcnt/100) * float(gen_dmg))      #determing dmg by attack type
         return gen_dmg
 
-    def take_dmg(self, attacker):
+    def take_dmg(self, attacker): # Calculates the damage the player takes
         rand_defence = float(self.defense) * (secrets.choice(range(70,100))/100)        # generating random defence by 70%-100% of defence stats
         dmg = attacker.gen_dmg() - int(rand_defence)       #using defense to lower dmg
         self.hp -= dmg
@@ -41,22 +41,22 @@ class Kratos:
             self.hp = 0
         return dmg
     
-    def reduce_stamina(self, cost):
+    def reduce_stamina(self, cost): # Reduces the stamina whenever the player attacks
         self.stamina -= cost
     
-    def raise_stamina(self, amount):
+    def raise_stamina(self, amount): # Increases stamina whenever the player uses a stamina regenerating item
         if (self.stamina + amount) > self.max_stamina:
             self.stamina = self.max_stamina
         else:
             self.stamina += amount
 
-    def raise_hp(self, amount):
+    def raise_hp(self, amount): # Functions that raises HP
         if (self.hp + amount) > self.max_hp:
             self.hp = self.max_hp
         else:
             self.hp += amount
 
-    def won(self):
+    def won(self): # Function that displays text after a fight is won
         self.kills += 1
         if not self.kills % 3:
             upgrade_list = ["max_hp", "max_stamina", "atk", "defense"]
@@ -78,7 +78,7 @@ class Kratos:
             self.atkl = self.atk - 10
             self.atkh = self.atk + 10
 
-    def choose_action(self):
+    def choose_action(self): # Function that allows the choosing of actions
         i = 0
         print(Color.BOLD + Color.UNDERLINE + "Actions" + Color.END)
         for action in self.actions:
@@ -89,7 +89,7 @@ class Kratos:
             action_input = int(input(Color.RED + Color.UNDERLINE + "Please choose a valid number from the list above.\n" + Color.END))
         return self.actions[action_input - 1]    #returning name of the action
     
-    def choose_attack(self):
+    def choose_attack(self): # Function that allows the choosing of weapons to attack
         if self.stamina < 10:
             print(Color.RED + "Not enough Stamina to use any attacks, try to rest instead.\n" + Color.END)
             return -1
@@ -107,7 +107,7 @@ class Kratos:
         return attack_move
         
 
-    def choose_item(self):
+    def choose_item(self): # Function that allows the choosing of items
         i = 0
         if self.items:
             for item in self.items:
@@ -121,7 +121,7 @@ class Kratos:
             print("You don't have any items to use yet, try to attack instead.\n")
             return -1
             
-    def use_item(self, item_num):
+    def use_item(self, item_num): # Function that allows the items to be used 
         heal = self.items[item_num].get("heal")
         amount = self.items[item_num].get("amount")
         name = self.items[item_num].get("name")
@@ -137,7 +137,7 @@ class Kratos:
             self.raise_hp(self.max_hp)
             self.raise_stamina(self.max_stamina)
     
-    def add_rand_item(self):
+    def add_rand_item(self): # Function that generates random items
         item_dict = secrets.choice(full_item_list)
         print(Color.BOLD +"\nWow ! You just found a " + Color.UNDERLINE + Color.BLUE+ item_dict.get("name") + Color.END + "\n")
         time.sleep(2)
@@ -149,7 +149,7 @@ class Kratos:
         else:
             self.items.append(item_dict)
     
-    def add_rand_move(self):
+    def add_rand_move(self): # Function that generates random moves
         move_dict = secrets.choice(full_attack_moves)
         move_name = move_dict.get("name")
         if move_dict in self.attacks:
