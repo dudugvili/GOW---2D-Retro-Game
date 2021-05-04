@@ -1,13 +1,5 @@
 import secrets
 from src.data.Color import Color
- 
-    def disable(self):
-        self.HEADER = ''
-        self.OKBLUE = ''
-        self.OKGREEN = ''
-        self.WARNING = ''
-        self.FAIL = ''
-        self.ENDC = ''
 
 class Map:
     def __init__(self, max_x, max_y, kratos_x, kratos_y):
