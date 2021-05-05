@@ -56,7 +56,7 @@ class Kratos:
         else:
             self.hp += amount
 
-    def won(self): # Function that displays text after a fight is won
+    def won(self): # Function that raise the player's level every 3 wins and upgrades his stats
         self.kills += 1
         if not self.kills % 3:
             upgrade_list = ["max_hp", "max_stamina", "atk", "defense"]
@@ -89,7 +89,7 @@ class Kratos:
             action_input = int(input(Color.RED + Color.UNDERLINE + "Please choose a valid number from the list above.\n" + Color.END))
         return self.actions[action_input - 1]    #returning name of the action
     
-    def choose_attack(self): # Function that allows the choosing of weapons to attack
+    def choose_attack(self): # Function that allows the choosing of attack type
         if self.stamina < 10:
             print(Color.RED + "Not enough Stamina to use any attacks, try to rest instead.\n" + Color.END)
             return -1
