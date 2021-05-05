@@ -2,7 +2,7 @@ import secrets
 from src.data.Color import Color
 
 class Map:
-    def __init__(self, max_x, max_y, kratos_x, kratos_y):
+    def __init__(self, max_x, max_y, kratos_x, kratos_y): # Instantiates the class
         object_type = ["rock", "grass", "grass", "grass"]
         full_map = []
         line_ctr = 0
@@ -28,7 +28,7 @@ class Map:
         self.max_x = max_x
         self.max_y = max_y
 
-    def print_cell(self, line_ctr, row_ctr):
+    def print_cell(self, line_ctr, row_ctr): # Prints the cells on the map
         cell_print = self.full_map[line_ctr][row_ctr]
         if any(ch in "-|" for ch in cell_print):
             print(Color.DARK_GRAY , end = '')
@@ -36,7 +36,7 @@ class Map:
             print(Color.GREEN, end = '')
         print(self.full_map[line_ctr][row_ctr] + Color.END , end = '')
 
-    def print_map(self):
+    def print_map(self): # Prints the entire map itself
         y_axis = self.kratos_cord['Y']
         x_axis = self.kratos_cord['X']
         if(y_axis - 15 < 0):

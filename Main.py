@@ -18,7 +18,7 @@ def set_game():    #saved file
         return Kratos(100, 35, 50, 15, 0, [full_item_list[0], full_item_list[1]])
         
 
-def new_game_text():
+def new_game_text(): # Introduction text 
     print(Color.RED + Color.UNDERLINE + Color.BOLD + "\n              GOD OF WAR              " + Color.END + "\n")
     print("                                  "+ Color.CYAN + Color.BOLD + " O  " + Color.END)
     print(Color.UNDERLINE + Color.BOLD +"Welcome, this is your player -" + Color.END + "    " + Color.CYAN + Color.BOLD + "/|\\" + Color.END)
@@ -47,7 +47,7 @@ def lottery_win(chance):        #function to randomly win attack moves and items
     return False
 
 
-def print_health(player, enemy):
+def print_health(player, enemy): #Prints the health of both the player and the enemy
     #HP print
     if int(player.hp/100):
         print("                        _________________________")
@@ -115,7 +115,7 @@ def print_health(player, enemy):
     else:
         print("    |" + Color.RED + bar_blocks + Color.END + blank_blocks + "|")
     
-def move(map):
+def move(map): Controls movement
     move_dict = {'W':-1 , 'A':-1, 'S':1, 'D':1, 'w':-1, 'a':-1, 's':1, 'd':1}
     move = chr(msvcrt.getch()[0])
     full_map = map.full_map

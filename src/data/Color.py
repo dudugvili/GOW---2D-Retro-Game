@@ -19,7 +19,7 @@ class Color:
     END = '\033[0m'
 
  
-    def disable(self):
+    def disable(self): # Function that disables color
         self.HEADER = ''
         self.OKBLUE = ''
         self.OKGREEN = ''
