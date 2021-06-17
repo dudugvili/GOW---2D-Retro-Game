@@ -22,8 +22,8 @@ class Mob:
             return -1
 
     def gen_dmg(self): # Function that generates the damage for the Mob
-        rand_prcnt = secrets.randbelow(100)
-        gen_dmg = int(float(rand_prcnt)/100 * (self.atkh - self.atkl))+(self.atkl)     #generating random dmg value between high and low
+        rand_prcnt = float(secrets.choice(range(60,100))/100)
+        gen_dmg = int(rand_prcnt * secrets.choice(range(self.atkl, self.atkh)))    #generating random dmg value between high and low
         return gen_dmg
 
 

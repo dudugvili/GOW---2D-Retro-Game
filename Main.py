@@ -15,10 +15,10 @@ def set_game():    #saved file
         print("Welcome back, here are your stats - ")
     else:
         new_game_text()
-        return Kratos(100, 35, 50, 15, 0, [full_item_list[0], full_item_list[1]])
+        return Kratos(100, 35, 60, 15, 0, [full_item_list[0], full_item_list[1]])
         
 
-def new_game_text(): # Introduction text 
+def new_game_text(): # Intro text 
     print(Color.RED + Color.UNDERLINE + Color.BOLD + "\n              GOD OF WAR              " + Color.END + "\n")
     print("                                  "+ Color.CYAN + Color.BOLD + " O  " + Color.END)
     print(Color.UNDERLINE + Color.BOLD +"Welcome, this is your player -" + Color.END + "    " + Color.CYAN + Color.BOLD + "/|\\" + Color.END)
@@ -115,7 +115,7 @@ def print_health(player, enemy): #Prints the health of both the player and the e
     else:
         print("    |" + Color.RED + bar_blocks + Color.END + blank_blocks + "|")
     
-def move(map): Controls movement
+def move(map): #Controls movement
     move_dict = {'W':-1 , 'A':-1, 'S':1, 'D':1, 'w':-1, 'a':-1, 's':1, 'd':1}
     move = chr(msvcrt.getch()[0])
     full_map = map.full_map
@@ -210,7 +210,7 @@ while player.hp:
                 print("            " + Color.RED + enemy.name + Color.END + " ATTACKS ! " + Color.RED + Color.BOLD + "-" + str(enemy_dmg) + " HP" + Color.END+ "\n")
 
             turn_ctr += 1
-            time.sleep(1.5)
+            time.sleep(2.5)
 
         if enemy.hp <= 0:
             print(Color.BLUE + Color.BOLD + Color.UNDERLINE + "You've defeated " + enemy.name + secrets.choice(mob_dead_text) + Color.END + "\n")

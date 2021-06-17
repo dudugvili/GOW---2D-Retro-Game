@@ -27,7 +27,7 @@ class Kratos:
         self.kills = 0
         self.level = 1
         self.actions = ["Attack", "Use", "Rest"]
-        self.attacks = [{"name": "Slash", "dmg_prcnt": 50, "accur": 100, "stamina": 10}]
+        self.attacks = [{"name": "Slash", "dmg_prcnt": 60, "accur": 100, "stamina": 10}]
     
     def gen_dmg(self, attack_prcnt): # Calculates the damage the player does
         gen_dmg = secrets.choice(range(self.atkl, self.atkh))     #generating random dmg value between high and low
@@ -86,44 +86,57 @@ class Kratos:
             i += 1
             print(str(i) + ": " + action)
         print("Choose action:")
-        action_input = int(chr(msvcrt.getch()[0]))
-        while action_input > i or action_input < 1:        #overflow check
+        action_input = "Null"
+        while not action_input.isnumeric():
+            action_input = chr(msvcrt.getch()[0])
+        while not action_input.isnumeric() or int(action_input) > i or int(action_input) < 1:        #overflow and numeric check
             print(Color.RED + Color.UNDERLINE + "Please choose a valid number from the list above.\n" + Color.END)
-            action_input = int(chr(msvcrt.getch()[0]))
-        return self.actions[action_input - 1]    #returning name of the action
+            action_input = chr(msvcrt.getch()[0])
+        return self.actions[int(action_input) - 1]    #returning name of the action
     
     def choose_attack(self): # Function that allows the choosing of attack type
         if self.stamina < 10:
             print(Color.RED + "Not enough Stamina to use any attacks, try to rest instead.\n" + Color.END)
             return -1
-        print(Color.BOLD + Color.UNDERLINE + "\nAttack Moves" + Color.END)
+        print(Color.RED + """
+              /| ________________
+        O|===|* >________________>
+              \|
+        """ + Color.END)
+        print(Color.BOLD + Color.UNDERLINE + "Attack Moves" + Color.END)
         i = 0
         for attack in self.attacks:
             i += 1
             print(str(i) + ": " + Color.BLUE + attack.get("name")+ Color.END + " | Damage Power: " + Color.RED +
                 str(attack.get("dmg_prcnt")) + "%" + Color.END + " | Stamina Cost: " + Color.GREEN + str(attack.get("stamina")) +
                     Color.END + " | Chances to miss: " + Color.YELLOW + str(100 - attack.get("accur")) + "%\n" + Color.END)
-        print("Choose attack: ")
-        attack_input = int(chr(msvcrt.getch()[0]))
-        while (attack_input > i or attack_input < 1) or (self.attacks[attack_input - 1].get("stamina") > self.stamina):          #overflow and stamina check
+        print("\nChoose attack: ")
+        attack_input = chr(msvcrt.getch()[0])
+        while not attack_input.isnumeric() or (int(attack_input) > i or int(attack_input) < 1) or (self.attacks[int(attack_input) - 1].get("stamina") > self.stamina):          #overflow and stamina check
             print(Color.RED + Color.UNDERLINE + "Invaild number entered or not enough Stamina available, please choose a different attack move.\n" + Color.END)
-            attack_input = int(chr(msvcrt.getch()[0]))
-        attack_move = self.attacks[attack_input -1]        #get dict element of attack
+            attack_input = chr(msvcrt.getch()[0])
+        attack_move = self.attacks[int(attack_input) -1]        #get dict element of attack
         return attack_move
         
 
     def choose_item(self): # Function that allows the choosing of items
+        print("""\n        .--[[__]]---.
+        ;-----------.|
+        | Inventory ||
+        |    Bag    ||
+        |___________|/ 
+         Your Items:""")
         i = 0
         if self.items:
             for item in self.items:
                 i += 1
-                print(str(i) + ":" +Color.BLUE + item.get("name") + Color.END + " - restore " + Color.BLUE +str(item.get("amount")) + Color.END + " " + str(item.get("heal")) + "(" +str(item.get("qty")) + " left) ")
-            print("Choose item: ")
-            item_input = int(chr(msvcrt.getch()[0]))
-            while item_input > i or item_input < 1:
+                print(str(i) + ": " +Color.BLUE + item.get("name") + Color.END + " - restore " + Color.BLUE +str(item.get("amount")) + Color.END + " " + str(item.get("heal")) + " (" +str(item.get("qty")) + " left) ")
+            print("\nChoose item: ")
+            item_input = chr(msvcrt.getch()[0])
+            while not item_input.isnumeric() or int(item_input) > i or int(item_input) < 1:
                 print(Color.RED + Color.UNDERLINE + "Please choose a valid number from the list above.\n" + Color.END)
-                item_input = int(chr(msvcrt.getch()[0]))
-            return item_input - 1
+                item_input = chr(msvcrt.getch()[0])
+            return int(item_input) - 1
         else:
             print("You don't have any items to use yet, try to attack instead.\n")
             return -1
@@ -136,6 +149,13 @@ class Kratos:
         if not self.items[item_num].get("qty"):     #if ran out of potion
             self.items.pop(item_num)
         print("\nUsing " + Color.BLUE + name + Color.END + " to recover " + Color.BLUE + str(amount) + Color.END+ " points of " + heal)
+        print(Color.BLUE + """ 
+              (-)      
+            .-'-'-.    
+            |-...-| 
+            |;:.._|  
+            `-...-'
+        """ + Color.END)
         if heal == "HP":
             self.raise_hp(amount)
         elif heal == "Stamina":
